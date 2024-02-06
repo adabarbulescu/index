@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Embedded Google Sheet with Conditional Auto-Refresh</title>
+</head>
+<body>
+    <iframe id="sheetIframe" src="https://docs.google.com/spreadsheets/d/1jOnwFy043-wW2-uT-xISC1Nqw6V8IJe0fWGTqkQKNjI/edit#gid=1244107958" width="600" height="400"></iframe>
+    <script>
+        var lastKnownUpdate = '';
+
+        function checkForUpdates() {
+            fetch('YOUR_WEB_APP_URL')
+                .then(response => response.text())
+                .then(text => {
+                    if (lastKnownUpdate && lastKnownUpdate !== text) {
+                        // Refresh the iframe if there's a new update
+                        document.getElementById('sheetIframe').src = document.getElementById('sheetIframe').src;
+                    }
+                    lastKnownUpdate = text;
+                })
+                .catch(error => console.error('Error checking updates:', error));
+        }
+
+        // Poll every 30 seconds, adjust as necessary
+        setInterval(checkForUpdates, 30000);
+    </script>
+</body>
+</html>
